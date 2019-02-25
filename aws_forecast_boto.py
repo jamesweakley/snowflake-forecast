@@ -86,8 +86,6 @@ PREDICTORNAME = 'snowflake_f_1'
 RAW_FILEPATH = 's3://snowflake-forecast-test/raw/data_0_0_0.csv'
 
 
-#ROLE_ARN = 'arn:aws:iam::325759174017:role/ForecastRole'
-#ROLE_ARN = 'arn:aws:iam::325759174017:role/ForecastRole'
 #Instantiate Forecast Session
 
 
@@ -98,7 +96,6 @@ forecastquery = session.client(service_name='forecastquery')
 s3 = session.client('s3')
 accountId = boto3.client('sts').get_caller_identity().get('Account')
 ROLE_ARN = 'arn:aws:iam::%s:role/amazonforecast'%accountId
-#ROLE_ARN = 'arn:aws:iam::325759174017:policy/service-role/AmazonForecast-ExecutionPolicy-1549316520600'
 
 
 #Unload Data From Snowflake to S3
