@@ -49,7 +49,7 @@ def setup_owner():
 	cursor = snowflake_connect(OWNER_ACCOUNT, OWNER_USER, OWNER_PASSWORD, OWNER_WAREHOUSE)
 	cursor.execute('CREATE OR REPLACE DATABASE ' + OWNER_DATABASE)
 	cursor.execute('CREATE OR REPLACE SCHEMA ' + OWNER_SCHEMA)
-	cursor.execute('CREATE OR REPLACE STAGE ' + OWNER_STAGE + ' url=\'s3://snowflake-forecast-test\' credentials=(aws_key_id=\'' + OWNER_PUBLIC_KEY + '\' aws_secret_key=\'' + OWNER_PRIVATE_KEY + '\')')
+	cursor.execute('CREATE OR REPLACE STAGE ' + OWNER_STAGE + ' url=\'' + S3_BUCKET + '\' credentials=(aws_key_id=\'' + OWNER_PUBLIC_KEY + '\' aws_secret_key=\'' + OWNER_PRIVATE_KEY + '\')')
 	cursor.execute('CREATE OR REPLACE TABLE ' + OWNER_TABLE + ' (ts timestamp, demand float, id string)')
 	cursor.execute('COPY INTO ' + OWNER_TABLE + ' FROM @' + OWNER_STAGE + '/item-demand-time.csv')
 
@@ -68,7 +68,7 @@ def setup_processor():
 	#CREATE RESULT SHARE
 	cursor.execute('CREATE OR REPLACE DATABASE ' + PROCESSOR_DATABASE)
 	cursor.execute('CREATE OR REPLACE SCHEMA ' + PROCESSOR_SCHEMA)
-	cursor.execute('CREATE OR REPLACE STAGE ' + PROCESSOR_STAGE + ' url=\'s3://snowflake-forecast-test\' credentials=(aws_key_id=\'' + PROCESSOR_PUBLIC_KEY+ '\' aws_secret_key=\'' + PROCESSOR_PRIVATE_KEY + '\')')
+	cursor.execute('CREATE OR REPLACE STAGE ' + PROCESSOR_STAGE + ' url=\'' + S3_BUCKET + '\' credentials=(aws_key_id=\'' + PROCESSOR_PUBLIC_KEY+ '\' aws_secret_key=\'' + PROCESSOR_PRIVATE_KEY + '\')')
 	cursor.execute('CREATE OR REPLACE TABLE ' + PROCESSOR_TABLE + ' (date datetime, first_observation_date datetime, item_id string, last_observation_date datetime, mean float, p10 float, p50 float, p90 float)')
 	cursor.execute('CREATE OR REPLACE SHARE FORECAST_RESULT_SHARE')
 	cursor.execute('GRANT USAGE ON DATABASE ' + PROCESSOR_DATABASE + ' TO SHARE FORECAST_RESULT_SHARE')
